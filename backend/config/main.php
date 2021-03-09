@@ -11,13 +11,34 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+    'modules' => [
+        'rbac' => [
+            'class' => 'yii2mod\rbac\Module',
+        ],
+        'admin' => [
+            'class' => 'mdm\admin\Module',
+            'as access' => [
+                'class' => 'mdm\admin\components\AccessControl',
+                'allowActions' => [
+                    'user/request-password-reset',
+                    'user/reset-password',
+                ]
+            ],
+            'controllerMap' => [
+                'user' => 'backend\controllers\AdminUserController'
+            ]
+        ],
+        'gridview' => [
+            'class' => '\kartik\grid\Module'
+        ],
+    ],
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
             'identityClass' => 'common\models\User',
+            'loginUrl' => ['admin/user/login'],
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],
@@ -37,14 +58,27 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
+        'view' => [
+            'theme' => [
+                'pathMap' => [
+                    '@vendor/mdmsoft/yii2-admin/views/' => '@app/views/admin'
+                ],
+            ]
+        ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
+        'urlManagerFrontend' => [
+            'baseUrl' => '', // url
+            'class' => 'yii\web\UrlManager',
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [
+            ],
+        ],
     ],
     'params' => $params,
 ];

@@ -1,0 +1,37 @@
+.ui-slider{
+  height: 8px;
+  position: relative;
+  border-radius: 3px;
+
+  &-range{
+    position: absolute;
+    height: 8px;
+  }
+
+  &-handle{
+    height: 18px;
+    width: 32px;
+    border-radius: 7px;
+    position: absolute;
+    touch-action: none;
+    cursor: pointer;
+    margin-left: 0;
+    top: -5px;
+    outline: 0;
+
+    &:last-child{
+      margin-left: -32px;
+    }
+
+    .handle_label{
+      position: absolute;
+      .bold;
+      .uppercase;
+      .center;
+      top: 25px;
+      left: -8px;
+      width: 46px;
+    }
+  }
+
+}

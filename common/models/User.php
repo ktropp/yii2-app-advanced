@@ -5,6 +5,7 @@ use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\helpers\Url;
 use yii\web\IdentityInterface;
 
 /**
@@ -28,6 +29,12 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
 
+    public $role;
+
+    static $roles = [
+        'admin' => 'Administrátor',
+        'superadmin' => 'Superadministrátor',
+    ];
 
     /**
      * {@inheritdoc}
@@ -55,7 +62,41 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_INACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            [['username', 'email', 'status'], 'required'],
+            [['username', 'email'], 'unique'],
+            [['email'], 'email'],
+            [['auth_key', 'password_hash', 'password_reset_token', 'updated_at', 'verification_token', 'wp_ID', 'role', 'first_name', 'last_name', 'phone', 'created_at'], 'safe'],
         ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'username' => 'Uživatelské jméno',
+            'first_name' => 'Jméno',
+            'last_name' => 'Příjmení',
+            'phone' => 'Telefon',
+            'role' => 'Role',
+        ];
+    }
+
+    public function afterFind()
+    {
+        parent::afterFind();
+
+        $this->role = $this->getRole();
+    }
+
+    public function getRole(){
+        if(!Yii::$app->authManager){
+            return false;
+        }
+        $roles = \Yii::$app->authManager->getRolesByUser($this->id);
+        foreach($roles as $role){
+            return $role->name;
+        }
+
+        return false;
     }
 
     /**
@@ -208,5 +249,14 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    public function getUrl(){
+        return Url::To(['admin/user/update', 'id' => $this->id]);
+    }
+
+    public static function hasRole($roleName, $userId) {
+        $authManager = \Yii::$app->getAuthManager();
+        return $authManager->getAssignment($roleName, $userId) ? true : false;
     }
 }

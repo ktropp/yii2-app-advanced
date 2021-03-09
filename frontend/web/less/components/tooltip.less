@@ -1,0 +1,18 @@
+.ui-tooltip{
+  padding: @x1;
+  position: absolute;
+  z-index: 9999;
+  max-width: 300px;
+  background-color: @white;
+  border: 1px solid @gray;
+  box-shadow: 0 2px 4px 0 fade(@black, 10);
+
+  .icon-pseudo(down, after);
+
+  &:after{
+    position: absolute;
+    bottom: -4px;
+    left: 11px;
+    color: @white;
+  }
+}

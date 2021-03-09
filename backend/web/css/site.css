@@ -137,3 +137,62 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+.form-group, div[data-toggle="multilingual-field"]{
+    position: relative;
+}
+
+.input-group-addon{
+    position: absolute;
+    top: 25px;
+    right: 0;
+    width: 185px;
+    height: 34px;
+    padding: 9px;
+}
+
+.image-manager-input .input-group-addon{
+    padding: 6px 12px;
+    height: auto;
+    width: 1%;
+    position: relative;
+    top: auto;
+    right: auto;
+}
+
+.input-group.date{
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.input-group.date .kv-date-picker{
+    position: relative;
+    right: auto;
+    width: 50px;
+    z-index: 9;
+    top: auto;
+}
+
+.input-group.date .kv-date-remove{
+    position: relative;
+    right: auto;
+    top: auto;
+    width: 50px;
+    z-index: 9;
+}
+
+.clear{
+    clear: both;
+}
+
+.green{
+    color: #3c763d;
+}
+
+.red{
+    color: #a94442;
+}
+
+.select2-container--krajee .select2-selection--multiple .select2-selection__rendered{
+    display: block;
+}
