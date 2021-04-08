@@ -9,8 +9,20 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
+use yii\web\View;
+use yii\helpers\Url;
 
 AppAsset::register($this);
+
+$options = [
+    'baseUrl' => Url::base(true),
+    'prod' => YII_ENV_PROD,
+];
+$this->registerJs(
+    "var yiiOptions = ".\yii\helpers\Json::htmlEncode($options).";",
+    View::POS_HEAD,
+    'yiiOptions'
+);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
